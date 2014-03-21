@@ -16,6 +16,7 @@ import uuid
 import subprocess
 import io
 import tarfile
+import socket
 
 import requests
 try:
@@ -42,7 +43,7 @@ class BTSync_process():
         [btsync_conf_file,
          address, port, login, password] = self.write_conf_file(self.btsync_exec_folder,
                                                                 address, port, login, password, api_key)
-        self.__address = address
+        self.__address = socket.gethostbyname(address)
         self.__port = port
         self.__login = login
         self.__password = password
@@ -152,7 +153,7 @@ class BTSync_process():
 
 class BTSync():
     def __init__(self, address, port, login, password):
-        self._address = address
+        self._address = socket.gethostbyname(address)
         self._port = port
         self._login = login
         self._password = password
@@ -217,22 +218,20 @@ class BTSync():
         arguments = 'secret=' + secret
         arguments = arguments + '&hosts=' + ",".join(hosts)
         return self._request_function('set_folder_hosts', arguments = arguments)
-    
-        
-    @property
-    def os(self):
+       
+    def get_os(self):
         return self._request_function('get_os', key='os')
 
-    @property
-    def version(self):
+    def get_version(self):
         return self._request_function('get_version', key='version')
 
-    @property
-    def download_speed(self):
+    def get_speed(self):
+        return self._request_function('get_speed')
+    
+    def get_download_speed(self):
         return self._request_function('get_speed', key='download')    
 
-    @property
-    def upload_speed(self):
+    def get_upload_speed(self):
         return self._request_function('get_speed', key='upload')
 
     def shutdown(self):
@@ -248,7 +247,7 @@ class BTSync():
 
 class BTSync_preferences():
     def __init__(self, address, port, login, password):
-        self._address = address
+        self._address = socket.gethostbyname(address)
         self._port = port
         self._login = login
         self._password = password
