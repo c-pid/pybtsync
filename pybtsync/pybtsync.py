@@ -162,11 +162,11 @@ class BTSync():
     def get_folders(self,secret=None):
         arguments = ''
         if secret is not None:
-            arguments = 'secret=' + secret
+            arguments = '&secret=' + secret
         return self._request_function('get_folders',arguments = arguments)
         
     def add_folder(self, folder_path, secret=None, selective_sync=0):
-        arguments = 'dir=' + folder_path
+        arguments = '&dir=' + folder_path
         if secret is not None:
             arguments = arguments + '&secret=' + secret
         if selective_sync != 0:
@@ -174,23 +174,23 @@ class BTSync():
         return self._request_function('add_folder', arguments = arguments)
         
     def remove_folder(self, secret):
-        arguments = 'secret=' + secret
+        arguments = '&secret=' + secret
         return self._request_function('remove_folder', arguments = arguments)
         
     def get_files(self, secret, path=None):
-        arguments = 'secret=' + secret
+        arguments = '&secret=' + secret
         if path is not None:
             arguments = arguments + '&path=' + path
         return self._request_function('get_files', arguments = arguments)
     
     def set_file_prefs(self, secret, path, download): #relative path
-        arguments = 'secret=' + secret
+        arguments = '&secret=' + secret
         arguments = arguments + '&path=' + path
         arguments = arguments + '&download=' + str(download)
         return self._request_function('set_file_prefs', arguments = arguments)
         
     def get_folder_peers(self, secret):
-        arguments = 'secret=' + secret
+        arguments = '&secret=' + secret
         return self._request_function('get_folder_peers', arguments = arguments)
 
     def get_secrets(self, secret=None): #encryption enables always
@@ -198,24 +198,24 @@ class BTSync():
             arguments = '&secret=' + secret
         else:
             arguments = ''
-        arguments = 'type=encryption' + arguments
+        arguments = '&type=encryption' + arguments
         return self._request_function('get_secrets', arguments = arguments)
         
     def get_folder_prefs(self, secret):
-        arguments = 'secret=' + secret
+        arguments = '&secret=' + secret
         return self._request_function('get_folder_prefs', arguments = arguments)
     
     def set_folder_prefs(self, secret, param, value):
-        arguments = 'secret=' + secret
+        arguments = '&secret=' + secret
         arguments = arguments + '&' + param + '=' + str(value)
         return self._request_function('set_folder_prefs', arguments = arguments)
     
     def get_folder_hosts(self, secret):
-        arguments = 'secret=' + secret
+        arguments = '&secret=' + secret
         return self._request_function('get_folder_hosts', arguments = arguments)
     
     def set_folder_hosts(self, secret, hosts):
-        arguments = 'secret=' + secret
+        arguments = '&secret=' + secret
         arguments = arguments + '&hosts=' + ",".join(hosts)
         return self._request_function('set_folder_hosts', arguments = arguments)
        
@@ -238,7 +238,7 @@ class BTSync():
         return self._request_function('shutdown', key='error')
 
     def _request_function(self, method_name, arguments='', key=None):
-        URL = 'http://' + self._address + ':' + self._port +'/api?method=' + method_name + '&' + arguments
+        URL = 'http://' + self._address + ':' + self._port +'/api?method=' + method_name + arguments
         request = requests.get(URL, auth=(self._login, self._password))
         request_data = request.json()
         if key is not None:
